@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Blueprints</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="js/apimock.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/apiclient.js"></script>
+  <script src="js/moduleCanvas.js"></script>
+
+  <script src="/webjars/jquery/jquery.min.js"></script>
+  <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet"
+        href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+</head>
+<body>
+<main>
+  <div style="margin-left: 2%;">
+    <h1 class="text-primary">Blueprints</h1>
+    <div class="card" style="width: 47%; margin-bottom: 2%;">
+      <div class="card-body">
+
+        <div class="mb-3">
+          <label id="name" for="inputName" class="form-label">Author name:</label>
+          <input id="inputName" type="text" class="form-control" aria-describedby="emailHelp">
+          <div id="authorHelp" class="form-text">Enter the author name</div>
+        </div>
+
+        <button id="authorNameButton" class="btn btn-success" onclick="app.getNameAuthorBlueprints()">Get Blueprints</button>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div>
+    <table id="tableBlueprints" class="table">
+      <thead>
+      <tr>
+        <th>Blueprint</th>
+        <th>points</th>
+        <th>Draw</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    <div>
+      <label>Total Points</label> <label id="points"/>
+    </div>
+    <div class="col-lg-5">
+      <h2 id="actualName" style="text-align: left">Current Blueprint:</h2>
+      <canvas
+              id="myCanvas"
+              width="500"
+              height="440"
+              style="border: 1px solid black"
+              class="myPanel"
+      ></canvas>
+    </div>
+  </div>
+</main>
+</body>
+</html>
