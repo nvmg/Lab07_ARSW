@@ -12,9 +12,10 @@ apimock=(function(){
 	mockdata["nicole"]=	[{author:"nicole","points":[{"x":180,"y":150},{"x":115,"y":120}],"name":"test1"}]
 	mockdata["daniel"]=	[{author:"daniel","points":[{"x":18,"y":15},{"x":195,"y":140}],"name":"test2"}]
 
-	function addPoint(x, y, author, bpname, callback){
-		var insert = {"x": x, "y":y};
-		mockdata[author].find(function(e){return e.name===bpname}).points.push(insert);
+	function addPoint(puntos, author, bpname, callback){
+		puntos.forEach((element) => {
+			mockdata[author].find(function(e){return e.name===bpname}).points.push(element);
+		})
 		callback();
 	}
 

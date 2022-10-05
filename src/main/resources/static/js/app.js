@@ -2,6 +2,7 @@ var apimock = apimock;
 var app = (function (){
     var author;
     var blueprintName;
+    var point=[];
 
     function getName() {
         $("#name").text(author + "'s " + "blueprints:");
@@ -10,6 +11,7 @@ var app = (function (){
     function getNameAuthorBlueprints() {
         clearCanvas()
         blueprintName = undefined;
+        point = [];
         author = $("#inputName").val();
         apimock.getNameAuthorBlueprints(author,tableData);
     }
@@ -40,6 +42,7 @@ var app = (function (){
     }
 
     function getBlueprintsByNameAndAuthor(data) {
+        point = [];
         author = $("#inputName").val();
         blueprintName = data.id;
 
@@ -55,20 +58,28 @@ var app = (function (){
     }
 
     var drawCanvas = function(blueprint){
-            clearCanvas()
-            can = document.getElementById("myCanvas");
-            ctx = can.getContext("2d");
-            ctx.beginPath();
-            blueprintsPoints = blueprint.points.slice(1, blueprint.points.length);
-            initx = blueprint.points[0].x;
-            inity = blueprint.points[0].y;
-            blueprintsPoints.forEach((element) => {
-            ctx.moveTo(initx, inity);
-            ctx.lineTo(element.x, element.y);
-            ctx.stroke();
-            initx = element.x;
-            inity = element.y;
-            });
+        clearCanvas()
+        can = document.getElementById("myCanvas");
+        ctx = can.getContext("2d");
+        ctx.beginPath();
+        var plano = blueprint.points;
+        var temp =[];
+        for (let i = 0; i < plano.length; i++) {
+            temp[i] = plano[i]
+        }
+        point.forEach((element) => {
+            temp.push(element);
+        })
+        blueprintsPoints = temp.slice(1, temp.length);
+        initx = blueprint.points[0].x;
+        inity = blueprint.points[0].y;
+        blueprintsPoints.forEach((element) => {
+        ctx.moveTo(initx, inity);
+        ctx.lineTo(element.x, element.y);
+        ctx.stroke();
+        initx = element.x;
+        inity = element.y;
+        });
     }
 
     function mousePos(canvas, evt){
@@ -88,9 +99,9 @@ var app = (function (){
         if(window.PointerEvent) {
             canvas.addEventListener("pointerdown", function(event){
                 if(author !== "" && blueprintName !== undefined){
+
                     raton = mousePos(canvas,event)
-                    //alert('punto marcado en: '+raton.x+','+raton.y+'Author: '+author+' Blueprint: '+blueprintName);
-                    apimock.addPoint(raton.x,raton.y,author,blueprintName, updateNameAuthorBlueprints);
+                    point.push({"x": raton.x, "y":raton.y});
                     apimock.getBlueprintsByNameAndAuthor(author,blueprintName , drawCanvas);
                 }else {
                     alert("No ha seleccionado ningún plano")
@@ -101,11 +112,16 @@ var app = (function (){
         }
     }
 
+    function addPoints(){
+        apimock.addPoint(point,author,blueprintName, updateNameAuthorBlueprints);
+    }
+
     return{
         getNameAuthorBlueprints: getNameAuthorBlueprints,
         updateNameAuthorBlueprints: updateNameAuthorBlueprints,
         getBlueprintsByNameAndAuthor: getBlueprintsByNameAndAuthor,
         getName: getName,
+        addPoints:addPoints,
         init: init
     }
 })();
