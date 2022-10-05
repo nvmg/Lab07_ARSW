@@ -8,14 +8,13 @@
   <script src="js/apimock.js"></script>
   <script src="js/app.js"></script>
   <script src="js/apiclient.js"></script>
-  <script src="js/moduleCanvas.js"></script>
 
   <script src="/webjars/jquery/jquery.min.js"></script>
   <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <link rel="stylesheet"
         href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
 </head>
-<body>
+<body onload="app.init()">
 <main>
   <div style="margin-left: 2%;">
     <h1 class="text-primary">Blueprints</h1>
@@ -48,18 +47,29 @@
 
       </tbody>
     </table>
+
+
     <div>
       <label>Total Points</label> <label id="points"/>
     </div>
-    <div class="col-lg-5">
-      <h2 id="actualName" style="text-align: left">Current Blueprint:</h2>
-      <canvas
-              id="myCanvas"
-              width="500"
-              height="440"
-              style="border: 1px solid black"
-              class="myPanel"
-      ></canvas>
+    <div class="card" style="width: 90%; margin: 2%; padding: 2%;">
+      <h3 class="text-primary" id="actualName">Current Blueprint: </h3>
+      <div>
+        <button id="crearBlueprint" type='button' class='btn btn-primary'> Create new blueprint</button>
+      </div>
+      <br>
+      <br>
+      <canvas id="myCanvas" width="500px" height="500px" style="border:1px solid black;"></canvas>
+
+      <div id = "cuerpoSaveUpdate">
+        <br>
+        <button  type='button' class='btn btn-success' >
+          Save/Update
+        </button>
+        <button type='button'  class='btn btn-danger' >
+          Delete
+        </button>
+      </div>
     </div>
   </div>
 </main>

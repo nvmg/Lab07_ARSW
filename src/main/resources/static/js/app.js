@@ -1,14 +1,21 @@
 var apimock = apimock;
 var app = (function (){
     var author;
+    var blueprintName;
 
     function getName() {
         $("#name").text(author + "'s " + "blueprints:");
     }
 
     function getNameAuthorBlueprints() {
+        clearCanvas()
+        blueprintName = undefined;
         author = $("#inputName").val();
-        apiclient.getNameAuthorBlueprints(author,tableData);
+        apimock.getNameAuthorBlueprints(author,tableData);
+    }
+
+    function updateNameAuthorBlueprints(){
+        apimock.getNameAuthorBlueprints(author,tableData);
     }
 
     var tableData = function( data) {
@@ -38,13 +45,19 @@ var app = (function (){
 
         document.getElementById("actualName").innerHTML =
                         "Current Blueprint: " + blueprintName;
-        apiclient.getBlueprintsByNameAndAuthor(author,blueprintName , drawCanvas);
+        apimock.getBlueprintsByNameAndAuthor(author,blueprintName , drawCanvas);
+    }
+
+    function clearCanvas(){
+        can = document.getElementById("myCanvas");
+        ctx = can.getContext("2d");
+        ctx.clearRect(0, 0, can.width, can.height);
     }
 
     var drawCanvas = function(blueprint){
+            clearCanvas()
             can = document.getElementById("myCanvas");
             ctx = can.getContext("2d");
-            ctx.clearRect(0, 0, can.width, can.height);
             ctx.beginPath();
             blueprintsPoints = blueprint.points.slice(1, blueprint.points.length);
             initx = blueprint.points[0].x;
@@ -58,10 +71,42 @@ var app = (function (){
             });
     }
 
+    function mousePos(canvas, evt){
+        var ClientRect = canvas.getBoundingClientRect();
+        return { //objeto
+            x: Math.round(evt.clientX - ClientRect.left),
+            y: Math.round(evt.clientY - ClientRect.top)
+        }
+    }
+
+    function init() {
+        var canvas = document.getElementById("myCanvas"),
+            context = canvas.getContext("2d");
+
+
+        //if PointerEvent is suppported by the browser:
+        if(window.PointerEvent) {
+            canvas.addEventListener("pointerdown", function(event){
+                if(author !== "" && blueprintName !== undefined){
+                    raton = mousePos(canvas,event)
+                    //alert('punto marcado en: '+raton.x+','+raton.y+'Author: '+author+' Blueprint: '+blueprintName);
+                    apimock.addPoint(raton.x,raton.y,author,blueprintName, updateNameAuthorBlueprints);
+                    apimock.getBlueprintsByNameAndAuthor(author,blueprintName , drawCanvas);
+                }else {
+                    alert("No ha seleccionado ningún plano")
+                }
+
+
+            });
+        }
+    }
+
     return{
         getNameAuthorBlueprints: getNameAuthorBlueprints,
+        updateNameAuthorBlueprints: updateNameAuthorBlueprints,
         getBlueprintsByNameAndAuthor: getBlueprintsByNameAndAuthor,
-        getName: getName
+        getName: getName,
+        init: init
     }
 })();
 
