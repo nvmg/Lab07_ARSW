@@ -55,7 +55,7 @@
     <div class="card" style="width: 90%; margin: 2%; padding: 2%;">
       <h3 class="text-primary" id="actualName">Current Blueprint: </h3>
       <div>
-        <button id="crearBlueprint" type='button' class='btn btn-primary'> Create new blueprint</button>
+        <button id="crearBlueprint" type='button' class='btn btn-primary' onclick="app.saveBlueprint()"> Create new blueprint</button>
       </div>
       <br>
       <br>
@@ -66,7 +66,7 @@
         <button  type='button' class='btn btn-success' onclick="app.addPoints()">
           Save/Update
         </button>
-        <button type='button'  class='btn btn-danger' >
+        <button type='button'  class='btn btn-danger' onclick="app.deleteBlueprint()">
           Delete
         </button>
       </div>

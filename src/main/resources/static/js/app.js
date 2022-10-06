@@ -1,4 +1,4 @@
-var apimock = apimock;
+var apiclient = apiclient;
 var app = (function (){
     var author;
     var blueprintName;
@@ -13,11 +13,11 @@ var app = (function (){
         blueprintName = undefined;
         point = [];
         author = $("#inputName").val();
-        apimock.getNameAuthorBlueprints(author,tableData);
+        apiclient.getNameAuthorBlueprints(author,tableData);
     }
 
     function updateNameAuthorBlueprints(){
-        apimock.getNameAuthorBlueprints(author,tableData);
+        apiclient.getNameAuthorBlueprints(author,tableData);
     }
 
     var tableData = function( data) {
@@ -48,7 +48,7 @@ var app = (function (){
 
         document.getElementById("actualName").innerHTML =
                         "Current Blueprint: " + blueprintName;
-        apimock.getBlueprintsByNameAndAuthor(author,blueprintName , drawCanvas);
+        apiclient.getBlueprintsByNameAndAuthor(author,blueprintName , drawCanvas);
     }
 
     function clearCanvas(){
@@ -102,7 +102,7 @@ var app = (function (){
 
                     raton = mousePos(canvas,event)
                     point.push({"x": raton.x, "y":raton.y});
-                    apimock.getBlueprintsByNameAndAuthor(author,blueprintName , drawCanvas);
+                    apiclient.getBlueprintsByNameAndAuthor(author,blueprintName , drawCanvas);
                 }else {
                     alert("No ha seleccionado ningún plano")
                 }
@@ -113,7 +113,24 @@ var app = (function (){
     }
 
     function addPoints(){
-        apimock.addPoint(point,author,blueprintName, updateNameAuthorBlueprints);
+        apiclient.addPoint(point,author,blueprintName, updateNameAuthorBlueprints);
+    }
+
+    function saveBlueprint(){
+        clearCanvas();
+        var bpName = prompt("Nombre del nuevo plano");
+        apiclient.saveBlueprint(author, bpName).then(() => {
+        getNameAuthorBlueprints();
+        })
+        .catch(err => console.log(err))
+    }
+
+    function deleteBlueprint(){
+        clearCanvas();
+        apiclient.deleteBlueprint(author, blueprintName).then(() => {
+        getNameAuthorBlueprints();
+        })
+        .catch(err => console.log(err))
     }
 
     return{
@@ -122,7 +139,9 @@ var app = (function (){
         getBlueprintsByNameAndAuthor: getBlueprintsByNameAndAuthor,
         getName: getName,
         addPoints:addPoints,
-        init: init
+        init: init,
+        saveBlueprint: saveBlueprint,
+        deleteBlueprint: deleteBlueprint
     }
 })();
 

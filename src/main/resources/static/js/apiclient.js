@@ -32,12 +32,38 @@ var apiclient = (function(){
           data: data
       });
       callback();
+  };
+
+  var saveBlueprint = function(author, blueprintName){
+    var data = JSON.stringify({author:author,"points":[],"name":blueprintName});
+    return new Promise(function(resolve, reject){
+        resolve(
+            $.ajax({
+                type:"POST",
+                url: "http://localhost:8080/blueprints/",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: data
+            })
+        )})
+  };
+
+  var deleteBlueprint = function(author, blueprintName){
+    return new Promise(function(resolve, reject){
+        resolve(
+            $.ajax({
+                type:"DELETE",
+                url: "http://localhost:8080/blueprints/" + author + "/" + blueprintName,
+            })
+        )})
   }
 
 return{
         getNameAuthorBlueprints: getNameAuthorBlueprints,
         getBlueprintsByNameAndAuthor: getBlueprintsByNameAndAuthor,
-        addPoint: addPoint
+        addPoint: addPoint,
+        saveBlueprint: saveBlueprint,
+        deleteBlueprint: deleteBlueprint
     }
 }
 
